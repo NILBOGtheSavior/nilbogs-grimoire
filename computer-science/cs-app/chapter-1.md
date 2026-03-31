@@ -87,7 +87,32 @@ By setting up caches to hold data that are likely to be accessed often, we can p
 
 ## 6. Storage Devices Form a Hierarchy
 
+The register file occupies the top level in the hierarchy, which is known as level 0 (L0). The main idea of a memory hierarchy is that storage at one level serves as cache for storage at the next lower level.
+
 ## 7. The Operating System Manages the Hardware
+
+```
+ ┌───────────────────────────────────────────┐
+ │            Application programs           │
+ ├───────────────────────────────────────────┤} Software
+ │              Operating system             │
+ ├─────────────┬───────────────┬─────────────┤
+ │  Processor  │  Main Memory  │ I/O devices │} Hardware
+ └─────────────┴───────────────┴─────────────┘
+```
+
+```
+                   Processes
+ ┌─────────────────────┴─────────────────────┐
+ |                      Virtual memory       |
+ |             ┌───────────────┴─────────────┐
+ |             |                    Files    |
+ |             |               ┌──────┴──────┐
+ ┌─────────────┬───────────────┬─────────────┐
+ │  Processor  │  Main Memory  │ I/O devices │
+ └─────────────┴───────────────┴─────────────┘
+```
+
 
 ## 8. Systems Communicate with Other Systems Using Networks
 
