@@ -91,6 +91,8 @@ The register file occupies the top level in the hierarchy, which is known as lev
 
 ## 7. The Operating System Manages the Hardware
 
+The operating system is the layer of software interposed between the application program and hardware. All attempts by an application to manipulate the hardware must go through the operating system.
+
 ```
  ┌───────────────────────────────────────────┐
  │            Application programs           │
@@ -113,7 +115,44 @@ The register file occupies the top level in the hierarchy, which is known as lev
  └─────────────┴───────────────┴─────────────┘
 ```
 
+The operating system has two primary pusposes: to protext the hardware from misuse by runaway applications and to provice applications with simple and uniform mechanisms for manipulating complicated and different low-level hardware devices.
+
+When we run a program, it appears to have exclusive use of both the processor, main memory, and I/O devices. The processor appears to execute the instructions in the program one after the other, without interruption, and the code and data of the program appear to be the only objects in the system's memory.
+
+### Processes
+
+A process is the OS's abstraction for running a program. Multiple processes can run concurrently on the same system, and each process appears to have exclusive use of the hardware. Traditional systems could only execute one program at a time, while newer multi-core processors can execute several programs simultaneously. A single CPU can appear to execute multiple processes concurrently by having the processor switch among them. This mechanism is known as *context switching*.
+
+The OS keeps track of all state information that the process needs in order to run. This state, which is known as the *context*, includes information such as the curent values of the PC, the register file, and the contents of main memory. When the OS decides to transfer control from the current process to some new process, it performs a context switch by saving the context of the current process, restoring the context of the new process, and then passing control to the new process.
+
+The transition from one process to another is managed my the OS kernel. The kernel is the portion of the OS code that is always resident in memory. When an application program requires some action by the OS, it executes a special *system call* instruction, transferring control to the kernel. The kernel then performs the requested operation and returns back to the application program.
+
+> **Note**
+>
+> The kernel is not a separate process, but a collection of code and data structures that the system uses to manage all processes.
+
+### Threads
+
+In modern systems, a process can consist of multiple execution units called threads, each running in the context of the process and sharing the same code and global data.
+
+### Virtual memory
+
+*Virtual memory* is an abstraction that provides each process with the illusion that it has exclusive use of main memoty. Each process has the same uniform view of memory, which is known as its virtual address space. In Linux, the topmost region of the address space is reserved for code and data in the operating system that is common to all processes. The lower region of the address space holds the code and data defined by the user's process.
+
+- **Program code and data** - Code begins at the same fixed address for all processes, followed by data locations that correspond to global C variables.. The code and data areas are initialized directly from the conents of an executable object file.
+- **Heap** - The code and data areas are followed immediately by the run-time heap. The heap expands and contracts dynamically at run-time as a result of calls to C standard library routines such as `malloc` and `free`.
+- **Shared libraries** - Near the middle of the address space is an area that holds the code and data for shared libraries such as the C standard library and the math library.
+- **Stack** - At the top of the user's virtual address space is the user stack that the compiler uses to implement function calls. The user stack expands and contracts dynamically suring the execution of the program.
+- **Kernel virual memory** - The top region of the address space is reserved for the kernel. Application programs are not allowed to read or write the contents of this area or to directly call functions defined in kernel code. Instead, they must invoke the kernel to perfrom these operations.
+
+### Files
+
+A *file* is a sequence of bytes. Every I/O device, including disks, keyboards, displays, and networks is modeled as a file. All I/O in the system is perfromed by reading and writing files, using a subset of system calls known as *Unix I/O*.
 
 ## 8. Systems Communicate with Other Systems Using Networks
 
-## 9. Important Themes
+From the point of view of the system, a network can be viewed as just another I/O device.
+
+Copying information from one machine to another has become one of the most important uses of computer systems. For example, email, instant messaging, the World Wide Web, FTP, and telnet are all based on the ability to copy information over a network.
+
+The exchange of information between clients and server is typical of all network applications.
